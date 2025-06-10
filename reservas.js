@@ -1,34 +1,32 @@
-// Mesas disponibles en el restaurante
-const mesasDisponibles = 5;
+let mesasDisponibles = 5;
 
-// Función para verificar la disponibilidad de mesas
 function verificarDisponibilidad(mesasSolicitadas) {
   return new Promise((resolve, reject) => {
+    console.log("Verificando disponibilidad...");
     setTimeout(() => {
       if (mesasSolicitadas <= mesasDisponibles) {
         resolve("Mesas disponibles");
       } else {
         reject("No hay suficientes mesas disponibles");
       }
-    }, 1000); // Simula retraso de consulta
+    }, 1000);
   });
 }
 
-// Función para simular el envío de correo de confirmación
 function enviarConfirmacionReserva(nombreCliente) {
   return new Promise((resolve, reject) => {
+    console.log("Enviando correo de confirmación...");
     setTimeout(() => {
-      const exitoEnvio = Math.random() > 0.3; // 70% de éxito
-      if (exitoEnvio) {
+      const exito = Math.random() > 0.2; // 80% probabilidad de éxito
+      if (exito) {
         resolve(`Correo enviado a ${nombreCliente}`);
       } else {
-        reject("Error al enviar correo");
+        reject("Error al enviar el correo de confirmación");
       }
-    }, 1000); // Simula tiempo de envío
+    }, 1000);
   });
 }
 
-// Función principal usando async/await
 async function hacerReserva(nombreCliente, mesasSolicitadas) {
   try {
     const disponibilidad = await verificarDisponibilidad(mesasSolicitadas);
@@ -39,10 +37,14 @@ async function hacerReserva(nombreCliente, mesasSolicitadas) {
 
     console.log(`Reserva confirmada para ${nombreCliente} - ${mesasSolicitadas} mesas.`);
   } catch (error) {
-    console.error("Error en la reserva:", error);
+    console.log("Error en la reserva:", error);
   }
 }
 
-// Pruebas
-hacerReserva("Celeste", 3);  // Caso exitoso
-hacerReserva("Juan", 7);     // Caso con error de disponibilidad
+// Llamadas de prueba ordenadas
+async function main() {
+  await hacerReserva("Celeste", 3); // éxito
+  await hacerReserva("Juan", 7);    // error (no hay suficientes mesas)
+}
+
+main();
